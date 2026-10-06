@@ -5,6 +5,8 @@ export type Insight = {
   excerpt: string;
   readTime: string;
   accent: "lilac" | "peach" | "sage";
+  seoTitle: string;
+  services: string[];
   sections: { heading: string; paragraphs: string[]; items?: string[] }[];
 };
 
@@ -16,6 +18,8 @@ export const INSIGHTS: Insight[] = [
     excerpt: "How to turn an ambitious idea into a focused first release, without losing sight of the bigger picture.",
     readTime: "4 min read",
     accent: "lilac",
+    seoTitle: "How to Plan a Focused First Product Release",
+    services: ["ui-ux-design", "web-development", "mobile-apps"],
     sections: [
       {
         heading: "Start with a situation, not a feature list",
@@ -47,6 +51,8 @@ export const INSIGHTS: Insight[] = [
     excerpt: "A practical approach to consistency: start with real patterns, document their purpose, and give the system room to grow.",
     readTime: "4 min read",
     accent: "peach",
+    seoTitle: "Design Systems That Make Decisions Easier",
+    services: ["ui-ux-design", "web-development"],
     sections: [
       {
         heading: "A shared way of making decisions",
@@ -78,6 +84,8 @@ export const INSIGHTS: Insight[] = [
     excerpt: "The practical questions to ask about reliability, ownership, and cost before your next stage of growth.",
     readTime: "4 min read",
     accent: "sage",
+    seoTitle: "Cloud Readiness Checklist Before You Scale",
+    services: ["cloud-computing", "devops", "cybersecurity"],
     sections: [
       {
         heading: "Understand the system you have",

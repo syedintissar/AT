@@ -1,14 +1,60 @@
-"use client";
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowDown, ArrowUpRight, Braces, Cloud, MousePointer2, Sparkles } from "lucide-react";
-import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from "framer-motion";
-import { useMotionPreference } from "./MotionProvider";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { SERVICES_DATA } from "@/data/services";
+import { cssVars } from "@/lib/css";
+import { HeroStage } from "./HeroStage";
+import { Magnetic } from "./Magnetic";
+
+const lines: { text: string; accent?: boolean }[][] = [
+  [{ text: "Good" }, { text: "ideas." }],
+  [{ text: "Great" }, { text: "software.", accent: true }],
+];
 
 export function Hero() {
-  const pointerX = useMotionValue(0); const pointerY = useMotionValue(0);
-  const springX = useSpring(pointerX, { stiffness: 100, damping: 24 }); const springY = useSpring(pointerY, { stiffness: 100, damping: 24 });
-  const rotateY = useTransform(springX, [-.5,.5], [-8,8]); const rotateX = useTransform(springY, [-.5,.5], [6,-6]);
-  const reduced = useReducedMotion(); const { paused } = useMotionPreference();
-  return <section className="hero"><div className="site-container"><div className="grid items-center gap-3 lg:grid-cols-[1.13fr_1fr] lg:gap-10"><div className="page-enter relative z-10"><p className="eyebrow mb-7">Your digital future, built together</p><h1 className="hero-heading">Good ideas.<br />Great <em>software.</em><span className="ml-2 inline-block align-top text-[28px] text-[#bd0a2f] sm:text-[35px]" aria-hidden="true">✳</span></h1><p className="mt-7 max-w-[440px] text-[15px] leading-[1.9] text-[#6b6d7b]">We’re Alhawaj Tech — your partners in turning ambitious ideas into beautifully designed, expertly engineered digital experiences.</p><div className="mt-8 flex flex-wrap items-center gap-3"><Link href="/contact" className="button-primary">Start your project <ArrowUpRight /></Link><Link href="/work" className="button-secondary">Explore our work <ArrowUpRight /></Link></div><div className="mt-10 flex items-center gap-4"><div className="flex -space-x-2" aria-hidden="true">{[Braces,MousePointer2,Cloud].map((Icon,i)=><span key={i} className={`grid size-9 place-items-center rounded-full border-[3px] border-[#faf9f6] ${i===0?"bg-[#e5e2f0] text-[#666082]":i===1?"bg-[#f4e0e4] text-[#a9586a]":"bg-[#e1ebe6] text-[#648172]"}`}><Icon size={14}/></span>)}</div><div><p className="text-[11px] font-semibold">Creative thinkers. Dedicated builders.</p><p className="mt-1 text-[10px] text-[#777886]">One connected team, from idea to impact.</p></div></div></div><motion.div className="hero-stage" aria-hidden="true" style={{ perspective: 1000, rotateX: reduced || paused ? 0 : rotateX, rotateY: reduced || paused ? 0 : rotateY }} onPointerMove={(event)=>{if(event.pointerType !== "mouse" || reduced || paused)return;const bounds=event.currentTarget.getBoundingClientRect();pointerX.set((event.clientX-bounds.left)/bounds.width-.5);pointerY.set((event.clientY-bounds.top)/bounds.height-.5);}} onPointerLeave={()=>{pointerX.set(0);pointerY.set(0);}}><div className="stage-halo"/><div className="stage-grid"/><span className="stage-code">IDEA → DESIGN → BUILD → IMPACT</span><div className="stage-orbit"/><div className="stage-orbit two"/><div className="core-assembly"><div className="core-layer layer-bottom"/><div className="core-layer layer-middle"/><div className="core-layer layer-top"><Image src="/icon.png" alt="" width={120} height={120} priority /></div></div><div className="stage-tag tag-design"><MousePointer2/> Thoughtfully designed <Sparkles size={12}/></div><div className="stage-tag tag-code"><Braces/> Built to make a difference</div><div className="stage-tag tag-cloud"><Cloud/> Ready to scale <span className="status-dot ml-1"/></div><span className="stage-spark"/><div className="stage-note"><span className="size-1 rounded-full bg-[#bd0a2f]"/> A little imagination. Endless possibilities.</div></motion.div></div><div className="mt-8 flex items-center justify-between gap-4 border-t border-[#e8e7e4] pt-6 text-[10px] text-[#777886]"><p className="flex items-center gap-2"><span className="status-dot"/> Thoughtful solutions. Lasting partnerships.</p><a href="#expertise" className="flex items-center gap-2 hover:text-[#bd0a2f]">A little more about us <ArrowDown size={13}/></a></div></div></section>;
+  return (
+    <section className="hero" aria-labelledby="hero-heading">
+      <div className="site-container">
+        <div className="grid items-center gap-6 lg:grid-cols-[1.3fr_1fr] lg:gap-8">
+          <div className="relative z-10">
+            <p className="eyebrow hero-fade mb-8" style={cssVars({ "--d": "0ms" })}>Digital product studio</p>
+            <h1 id="hero-heading" className="display-xl">
+              {lines.map((line, lineIndex) => (
+                <span key={lineIndex} className="block">
+                  {line.map((word, wordPosition) => {
+                    const i = lines.slice(0, lineIndex).reduce((count, previous) => count + previous.length, 0) + wordPosition;
+                    return (
+                      <span key={word.text} className="hero-word mr-[.22em] last:mr-0">
+                        <span style={cssVars({ "--i": i })} className={word.accent ? "serif-accent text-brand" : undefined}>{word.text}</span>
+                      </span>
+                    );
+                  })}
+                </span>
+              ))}
+            </h1>
+            <p className="body-copy hero-fade mt-8 max-w-[520px]" style={cssVars({ "--d": "450ms" })}>
+              Alhawaij Tech designs and engineers web platforms, mobile apps, and cloud foundations for businesses ready to grow. One connected team, from the first sketch to launch and beyond.
+            </p>
+            <div className="hero-fade mt-10 flex flex-wrap items-center gap-3" style={cssVars({ "--d": "550ms" })}>
+              <Magnetic><Link href="/contact" className="button-primary">Start a project <ArrowUpRight aria-hidden="true" /></Link></Magnetic>
+              <Magnetic><Link href="/work" className="button-secondary">View our work <ArrowUpRight aria-hidden="true" /></Link></Magnetic>
+            </div>
+          </div>
+          <HeroStage />
+        </div>
+        <div className="hero-fade mt-10 grid gap-6 border-t border-line pt-8 sm:grid-cols-3 lg:mt-14" style={cssVars({ "--d": "700ms" })}>
+          {[
+            [`${SERVICES_DATA.length} services`, "Design, engineering, cloud, and growth under one roof."],
+            ["One connected team", "Strategy, design, and build stay in the same conversation."],
+            ["Beyond launch", "Support, optimization, and the room your product needs to grow."],
+          ].map(([title, text]) => (
+            <div key={title}>
+              <p className="text-[15px] font-semibold tracking-tight">{title}</p>
+              <p className="mt-1.5 text-sm leading-6 text-muted">{text}</p>
+            </div>
+          ))}
+        </div>
+        <a href="#services" className="label mt-10 hidden items-center gap-2 transition-colors hover:text-brand lg:inline-flex">Scroll to explore <ArrowDown size={14} aria-hidden="true" /></a>
+      </div>
+    </section>
+  );
 }

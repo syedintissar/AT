@@ -1,5 +1,23 @@
 import { ServiceItem } from "@/types";
 
+type ServiceSeo = { title: string; description: string; techCategories: string[] };
+
+// Search-facing titles/descriptions and the TECH_CATEGORIES each service draws on.
+export const SERVICE_SEO: Record<string, ServiceSeo> = {
+  devops: { title: "DevOps Services & CI/CD Automation", description: "DevOps consulting and implementation: automated CI/CD pipelines, Docker and Kubernetes, infrastructure as code, and monitoring for faster, safer releases.", techCategories: ["DevOps", "Cloud"] },
+  "web-development": { title: "Web Design & Development Services", description: "Custom websites and web applications built with Next.js, React, and Node.js. Fast, accessible, search-friendly platforms designed around your business goals.", techCategories: ["Frontend", "Backend", "Database"] },
+  "mobile-apps": { title: "Mobile App Development for iOS & Android", description: "iOS and Android app development, native or cross-platform with React Native and Flutter, from product design and prototyping to App Store and Play Store launch.", techCategories: ["Mobile", "Backend"] },
+  "cloud-computing": { title: "Cloud Computing & Migration Services", description: "Cloud architecture, migration, and cost optimization on AWS, Google Cloud, and Azure. Secure, scalable infrastructure that grows with your business.", techCategories: ["Cloud", "DevOps"] },
+  cybersecurity: { title: "Cybersecurity Services & Security Audits", description: "Vulnerability assessments, penetration testing, zero-trust architecture, and compliance preparation to protect your applications, data, and customers.", techCategories: ["Cybersecurity"] },
+  ecommerce: { title: "eCommerce Website Development", description: "Custom and headless eCommerce development: fast storefronts, checkout optimization, payment gateway integration, and inventory sync for growing online stores.", techCategories: ["Frontend", "Backend", "Database"] },
+  "ui-ux-design": { title: "UI/UX Design Services", description: "User research, wireframes, interactive prototypes, and design systems that turn complex products into clear, intuitive web and mobile experiences.", techCategories: [] },
+  "graphic-design": { title: "Graphic Design & Brand Identity", description: "Brand identity, visual guidelines, illustration, and marketing collateral that give your business a distinctive, consistent look across every touchpoint.", techCategories: [] },
+  "digital-marketing": { title: "Digital Marketing Services", description: "Performance marketing that drives qualified leads: PPC campaigns, conversion rate optimization, attribution modeling, and clear analytics reporting.", techCategories: ["Analytics"] },
+  seo: { title: "SEO Services: Technical SEO & Content", description: "Technical SEO audits, Core Web Vitals improvements, keyword research, and on-page optimization to grow qualified organic traffic to your website.", techCategories: ["Analytics"] },
+  "content-writing": { title: "Content Writing & Copywriting Services", description: "Website copy, technical articles, whitepapers, and case studies written to explain your value clearly, support SEO, and turn readers into customers.", techCategories: [] },
+  "it-support": { title: "IT Support & Managed IT Services", description: "Helpdesk support, network and endpoint management, patching, and disaster recovery to keep your team productive and your systems running reliably.", techCategories: [] },
+};
+
 export const SERVICES_DATA: ServiceItem[] = [
   {
     id: "devops",

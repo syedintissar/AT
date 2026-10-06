@@ -1,34 +1,61 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowUpRight, ArrowRight, Atom, Cloud, Code2, Component, Compass, GitBranch, Globe, Layers, PenTool, Rocket, ShieldCheck, Smartphone } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Hero } from "@/components/Hero";
+import { TechMarquee } from "@/components/TechMarquee";
+import { ServicesIndex } from "@/components/ServicesIndex";
+import { FeaturedWork } from "@/components/FeaturedWork";
+import { Approach } from "@/components/Approach";
+import { ProcessTimeline } from "@/components/ProcessTimeline";
 import { Reveal } from "@/components/Reveal";
 import { CtaBanner } from "@/components/CtaBanner";
-import { ProjectVisual } from "@/components/ProjectVisual";
 import { InsightArtwork } from "@/app/insights/InsightArtwork";
-import { PROJECTS } from "@/data/projects";
 import { INSIGHTS } from "@/data/insights";
 
-const featuredServices = [
-  { id: "web-development", icon: Globe, title: "Web development", text: "Fast, intuitive websites and powerful platforms. Built around your business and the people who use them.", tags: "Web apps · Websites · eCommerce", color: "#eeecf7" },
-  { id: "ui-ux-design", icon: PenTool, title: "UI/UX & product design", text: "We turn complex challenges into clear, engaging experiences that feel effortless from the very first click.", tags: "Research · Design systems · Prototypes", color: "#f8eceb" },
-  { id: "mobile-apps", icon: Smartphone, title: "Mobile applications", text: "Thoughtful iOS and Android experiences that put your business right where your customers are.", tags: "iOS · Android · Cross-platform", color: "#eaf0e9" },
-  { id: "cloud-computing", icon: Cloud, title: "Cloud & DevOps", text: "A dependable foundation for your next chapter. Secure infrastructure that grows alongside your ambition.", tags: "Cloud · Automation · Infrastructure", color: "#eaf0f7" },
-  { id: "cybersecurity", icon: ShieldCheck, title: "Cybersecurity", text: "Confidence, built in. Protect your products, your data, and the trust you’ve worked hard to earn.", tags: "Security audits · Monitoring · Protection", color: "#f7eee1" },
-  { id: "digital-marketing", icon: Rocket, title: "Digital growth", text: "Help the right people find you. Connect your brand with its audience through strategy, content, and search.", tags: "Marketing · SEO · Content", color: "#f3eaf0" },
-];
+const homeTitle = "Software Development & Design Company | Alhawaij Tech";
+const homeDescription = "Software development company building custom websites, web apps, mobile apps, eCommerce, and cloud solutions, with design, engineering, and support in one team.";
+
+export const metadata: Metadata = {
+  title: { absolute: homeTitle },
+  description: homeDescription,
+  alternates: { canonical: "/" },
+  openGraph: { title: homeTitle, description: homeDescription, url: "/", siteName: "Alhawaij Tech", locale: "en_US", type: "website" },
+  twitter: { card: "summary_large_image", title: homeTitle, description: homeDescription },
+};
 
 export default function Home() {
-  return <>
-    <Hero />
-    <section className="tech-strip" aria-label="Technologies we work with"><div className="site-container flex flex-col items-center gap-7 lg:flex-row lg:justify-between"><p className="max-w-[180px] text-center text-[10px] leading-5 tracking-wide text-[#777886] lg:text-left">BIG IDEAS. BUILT WITH<br className="hidden lg:block"/> THE RIGHT TECHNOLOGY.</p><div className="flex flex-wrap items-center justify-center gap-x-9 gap-y-5 sm:gap-x-12"><span className="tech-name"><Atom/>React</span><span className="tech-name">NEXT<span className="-ml-1 text-[11px]">.js</span></span><span className="tech-name"><Code2/>node.js</span><span className="tech-name"><Cloud/>aws</span><span className="tech-name"><Component/>Figma</span><span className="tech-name"><GitBranch/>Docker</span></div></div></section>
-    <section className="site-container section-space" id="expertise">
-      <Reveal className="mb-11 flex flex-col justify-between gap-7 md:flex-row md:items-end"><div><p className="eyebrow mb-4">What we bring to the table</p><h2 className="section-title">Big-picture thinking.<br/><span className="text-[#8a8998]">Every little detail.</span></h2></div><div className="max-w-[365px]"><p className="body-copy mb-4 text-sm!">From the first sketch to the next big milestone, we bring design, engineering, and strategy together.</p><Link href="/services" className="text-link">Explore all 12 services <ArrowUpRight/></Link></div></Reveal>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">{featuredServices.map(({id,icon:Icon,title,text,tags,color},i)=><Reveal key={id} delay={(i%3)*.07}><Link href={`/services/${id}`} className="service-card h-full"><div className="mb-7 flex items-center justify-between"><span style={{background:color}} className="grid size-11 place-items-center rounded-xl"><Icon size={21} strokeWidth={1.5}/></span><ArrowUpRight className="service-arrow text-[#a1a0ab]" size={20}/></div><h3 className="mb-3 text-[19px] font-medium tracking-[-.035em]">{title}</h3><p className="mb-6 text-[12px] leading-[1.9] text-[#6b6d7b]">{text}</p><p className="mt-auto border-t border-[#eeedf0] pt-4 text-[9px] text-[#898895]">{tags}</p></Link></Reveal>)}</div>
-    </section>
-    <section className="border-y border-[#e8e7e4] bg-[#f1f0f5] section-space"><div className="site-container"><Reveal className="mb-11 flex flex-col justify-between gap-6 sm:flex-row sm:items-end"><div><p className="eyebrow mb-4">Ideas in action</p><h2 className="section-title">A glimpse of <span className="font-serif italic font-normal">what’s possible.</span></h2></div><Link href="/work" className="text-link shrink-0">Explore the studio <ArrowUpRight/></Link></Reveal><div className="grid gap-8 md:grid-cols-2">{PROJECTS.slice(0,2).map((project,i)=><Reveal key={project.slug} delay={i*.1}><Link href={`/work/${project.slug}`} className="group block"><div className="home-project-visual transition-transform duration-500 group-hover:-translate-y-1"><ProjectVisual variant={project.variant} compact/></div><div className="mt-5 flex items-start justify-between gap-3"><div><p className="mb-2 text-[10px] uppercase tracking-widest text-[#777886]">{project.discipline} · Studio concept</p><h3 className="text-xl font-medium tracking-tight">{project.title}</h3><p className="mt-2 max-w-md text-xs leading-6 text-[#6b6d7b]">{project.description}</p></div><span className="mt-2 grid size-9 shrink-0 place-items-center rounded-full border border-[#d7d5e1] transition-colors group-hover:bg-white"><ArrowUpRight size={17}/></span></div></Link></Reveal>)}</div><p className="mt-8 text-[11px] text-[#777886]">Original studio explorations of the products we can build together.</p></div></section>
-    <section className="site-container section-space"><div className="grid gap-12 lg:grid-cols-[.95fr_1.05fr] lg:gap-24"><Reveal><p className="eyebrow mb-5">More than a development partner</p><h2 className="section-title">Your ambition.<br/>Our shared obsession.</h2><p className="body-copy mt-6 text-sm!">We’re the people who ask one more question, refine one more interaction, and care about your product as much as you do.</p><p className="body-copy mt-4 text-sm!">At Alhawaj Tech, creative thinking meets practical engineering. We work alongside you to make the complicated feel simple — and the ambitious feel achievable.</p><Link href="/about" className="text-link mt-6">Get to know us <ArrowUpRight/></Link></Reveal><Reveal delay={.1}><div className="relative grid h-full min-h-[340px] grid-cols-2 gap-3"><div className="flex flex-col justify-between rounded-xl bg-[#eeecf4] p-7"><Layers className="size-8 text-[#807599]" strokeWidth={1.2}/><div><span className="text-[64px] font-light tracking-[-.075em]">12</span><p className="text-xs text-[#6b6d7b]">Connected digital disciplines</p></div></div><div className="flex flex-col gap-3 pt-8"><div className="flex flex-1 flex-col justify-between rounded-xl border border-[#e8e7e4] bg-white p-6"><Compass size={26} className="text-[#bd0a2f]" strokeWidth={1.2}/><p className="mt-5 text-lg font-medium leading-snug tracking-tight">Your vision.<br/>Our starting point.</p></div><div className="rounded-xl bg-[#f2e5e4] p-6"><p className="text-[11px] leading-6 text-[#90636b]">Small details. Real care.<br/><span className="font-semibold text-[#171a3b]">Better things, together.</span></p></div></div></div></Reveal></div></section>
-    <section className="border-y border-[#e8e7e4] bg-white section-space"><div className="site-container"><Reveal className="mb-14 flex flex-col justify-between gap-6 md:flex-row md:items-end"><div><p className="eyebrow mb-4">How we make it happen</p><h2 className="section-title">A clear path from<br/>“what if” to what’s next.</h2></div><p className="body-copy max-w-[340px] text-sm!">Collaborative from day one. Clear at every step.<br/>A process that keeps you part of the picture.</p></Reveal><div className="grid gap-x-7 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">{[{name:"Discover",text:"We listen, ask questions, and get to the heart of your goals.",icon:Compass},{name:"Design",text:"We shape the strategy and the experience before writing a line of code.",icon:PenTool},{name:"Develop",text:"We build in focused sprints, with working software and regular check-ins.",icon:Code2},{name:"Deliver & grow",text:"We launch with care, learn from real users, and keep moving forward.",icon:Rocket}].map((step,i)=><Reveal className="process-step" key={step.name} delay={i*.08}><div className="mb-7 flex items-center justify-between"><span className="font-mono text-[11px] text-[#a2a0ad]">0{i+1}</span><step.icon size={20} className="text-[#8a879c]" strokeWidth={1.5}/></div><h3 className="mb-3 text-lg font-medium tracking-tight">{step.name}</h3><p className="text-xs leading-7 text-[#6b6d7b]">{step.text}</p></Reveal>)}</div></div></section>
-    <section className="site-container section-space"><Reveal className="mb-10 flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><div><p className="eyebrow mb-4">A little food for thought</p><h2 className="section-title">From our perspective.</h2></div><Link href="/insights" className="text-link">All insights <ArrowUpRight/></Link></Reveal><div className="grid gap-8 md:grid-cols-3">{INSIGHTS.slice(0,3).map((article,i)=><Reveal key={article.slug} delay={i*.08}><Link href={`/insights/${article.slug}`} className="insight-card group block"><div className="overflow-hidden rounded-xl"><InsightArtwork accent={article.accent}/></div><p className="mt-5 text-[10px] text-[#8a8996]">{article.category} <span className="mx-2">·</span> {article.readTime}</p><h3 className="mt-2.5 text-[18px] font-medium leading-snug tracking-tight transition-colors group-hover:text-[#bd0a2f]">{article.title}</h3><span className="text-link mt-4 text-[11px]!">Read the story <ArrowRight/></span></Link></Reveal>)}</div></section>
-    <CtaBanner/>
-  </>;
+  return (
+    <>
+      <Hero />
+      <TechMarquee />
+      <ServicesIndex />
+      <FeaturedWork />
+      <Approach />
+      <ProcessTimeline />
+      <section className="site-container section-space" aria-labelledby="insights-heading">
+        <Reveal className="mb-14 flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+          <div>
+            <p className="eyebrow mb-6">From the studio</p>
+            <h2 id="insights-heading" className="section-title">A little <span className="serif-accent text-muted">perspective.</span></h2>
+          </div>
+          <Link href="/insights" className="text-link shrink-0">All insights <ArrowUpRight aria-hidden="true" /></Link>
+        </Reveal>
+        <div className="grid gap-x-8 gap-y-14 md:grid-cols-3">
+          {INSIGHTS.slice(0, 3).map((article, index) => (
+            <Reveal key={article.slug} delay={index * 0.08}>
+              <Link href={`/insights/${article.slug}`} className="group block">
+                <div className="overflow-hidden rounded-[var(--radius-md)]">
+                  <div className="transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:scale-[1.04]"><InsightArtwork accent={article.accent} /></div>
+                </div>
+                <p className="label mt-6">{article.category} <span className="mx-2" aria-hidden="true">·</span> {article.readTime}</p>
+                <h3 className="mt-3 text-[22px] font-medium leading-snug tracking-[-0.03em] transition-colors group-hover:text-brand">{article.title}</h3>
+                <span className="mt-5 inline-flex items-center gap-2 text-[15px] font-medium">Read the story <ArrowUpRight size={17} aria-hidden="true" className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></span>
+              </Link>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+      <CtaBanner />
+    </>
+  );
 }

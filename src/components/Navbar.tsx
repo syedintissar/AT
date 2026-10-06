@@ -3,16 +3,39 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowUpRight, Menu, X } from "lucide-react";
-import { NAV_ITEMS } from "@/data/company";
+import { ArrowUpRight } from "lucide-react";
+import { CONTACT_INFO, NAV_ITEMS } from "@/data/company";
+import { cssVars } from "@/lib/css";
 
 export function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let lastY = window.scrollY;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const y = window.scrollY;
+      setScrolled(y > 12);
+      if (Math.abs(y - lastY) > 6) setHidden(y > lastY && y > 480);
+      lastY = y;
+    };
+    const onScroll = () => { if (!frame) frame = requestAnimationFrame(update); };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => { window.removeEventListener("scroll", onScroll); cancelAnimationFrame(frame); };
+  }, []);
+
   useEffect(() => {
     if (!open) return;
+    const root = document.documentElement;
+    const previousOverflow = root.style.overflow;
+    root.style.overflow = "hidden";
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") { setOpen(false); toggleRef.current?.focus(); }
       if (event.key === "Tab") {
@@ -23,10 +46,62 @@ export function Navbar() {
       }
     };
     const onResize = () => { if (window.innerWidth >= 1024) setOpen(false); };
-    const onClick = (event: MouseEvent) => { if (event.target instanceof Node && !menuRef.current?.contains(event.target) && !toggleRef.current?.contains(event.target)) setOpen(false); };
-    window.addEventListener("keydown", onKey); window.addEventListener("resize", onResize); document.addEventListener("click", onClick);
-    return () => { window.removeEventListener("keydown", onKey); window.removeEventListener("resize", onResize); document.removeEventListener("click", onClick); };
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("resize", onResize);
+    return () => { root.style.overflow = previousOverflow; window.removeEventListener("keydown", onKey); window.removeEventListener("resize", onResize); };
   }, [open]);
-  const active = (href: string) => href === "/" ? pathname === "/" : pathname.startsWith(href);
-  return <header className="site-header"><div className="site-container flex h-[84px] items-center justify-between gap-8"><Link href="/" aria-label="Alhawaj Tech home" onClick={() => setOpen(false)}><Image src="/logo.png" alt="Alhawaj Tech" width={149} height={61} priority className="h-auto w-[139px]" /></Link><nav aria-label="Main navigation" className="hidden items-center gap-7 lg:flex">{NAV_ITEMS.map((item) => <Link key={item.href} href={item.href} className="nav-link" aria-current={active(item.href) ? "page" : undefined}>{item.label}</Link>)}</nav><Link href="/contact" className="button-primary hidden min-h-[43px]! px-4! py-2.5! sm:inline-flex">Let’s talk <ArrowUpRight size={16} /></Link><button ref={toggleRef} type="button" className="rounded-md border border-[#e8e7e4] p-2.5 lg:hidden" aria-label={open ? "Close navigation" : "Open navigation"} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)}>{open ? <X size={21} /> : <Menu size={21} />}</button></div>{open && <div ref={menuRef} id="mobile-navigation" className="absolute top-full right-0 left-0 border-b border-[#e8e7e4] bg-[#faf9f6] shadow-xl shadow-[#171a3b08] lg:hidden"><nav aria-label="Mobile navigation" className="site-container flex flex-col gap-1 py-5">{NAV_ITEMS.map((item) => <Link key={item.href} href={item.href} onClick={() => setOpen(false)} aria-current={active(item.href) ? "page" : undefined} className={`rounded-md px-3 py-3.5 text-sm ${active(item.href) ? "bg-[#eeecf4] font-semibold text-[#bd0a2f]" : "text-[#626375]"}`}>{item.label}</Link>)}<Link href="/contact" onClick={() => setOpen(false)} className="button-primary mt-3">Start a project <ArrowUpRight /></Link></nav></div>}</header>;
+
+  const active = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+  const close = () => setOpen(false);
+
+  return (
+    <header className="site-header" data-scrolled={scrolled} data-hidden={hidden && !open} data-menu={open ? "open" : "closed"}>
+      <div className="site-container flex h-full items-center justify-between gap-8">
+        <Link href="/" aria-label="Alhawaij Tech home" onClick={close} className="relative z-10 shrink-0">
+          <Image src="/logo.png" alt="Alhawaij Tech" width={375} height={153} loading="eager" fetchPriority="high" sizes="140px" className={`h-auto w-[118px] transition-[filter] duration-300 sm:w-[132px] ${open ? "brightness-0 invert" : ""}`} />
+        </Link>
+        <nav aria-label="Main navigation" className="hidden items-center gap-9 lg:flex">
+          {NAV_ITEMS.map((item) => <Link key={item.href} href={item.href} className="nav-link link-underline" aria-current={active(item.href) ? "page" : undefined}>{item.label}</Link>)}
+        </nav>
+        <div className="flex items-center gap-3">
+          <Link href="/contact" className="button-primary hidden min-h-[46px]! px-5! py-2.5! text-[14px]! sm:inline-flex">Start a project <ArrowUpRight aria-hidden="true" /></Link>
+          <button
+            ref={toggleRef}
+            type="button"
+            className={`relative z-10 grid size-12 place-items-center rounded-full border transition-colors lg:hidden ${open ? "border-white/25 text-white" : "border-line-strong text-ink"}`}
+            aria-label={open ? "Close navigation" : "Open navigation"}
+            aria-expanded={open}
+            aria-controls="mobile-navigation"
+            onClick={() => setOpen(!open)}
+          >
+            <span aria-hidden="true" className="relative block h-3 w-5">
+              <span className={`absolute left-0 block h-[1.5px] w-5 bg-current transition-transform duration-500 ease-[var(--ease-out-expo)] ${open ? "top-[5px] rotate-45" : "top-0"}`} />
+              <span className={`absolute left-0 block h-[1.5px] w-5 bg-current transition-transform duration-500 ease-[var(--ease-out-expo)] ${open ? "top-[5px] -rotate-45" : "top-[10px]"}`} />
+            </span>
+          </button>
+        </div>
+      </div>
+      <div ref={menuRef} id="mobile-navigation" className="mobile-menu on-night fixed inset-x-0 bottom-0 top-[var(--header-h)] overflow-y-auto lg:hidden" data-open={open}>
+        <nav aria-label="Mobile navigation" className="site-container flex min-h-full flex-col pb-10 pt-8">
+          <ul className="flex flex-col">
+            {NAV_ITEMS.map((item, index) => (
+              <li key={item.href} className="overflow-hidden border-b border-line-night">
+                <div className="mobile-menu-item" style={cssVars({ "--i": index })}>
+                  <Link href={item.href} onClick={close} aria-current={active(item.href) ? "page" : undefined} className="flex items-baseline justify-between py-5 text-[clamp(2rem,9vw,3rem)] font-medium leading-none tracking-[-0.045em]">
+                    {item.label}
+                    <span className={`font-mono text-xs tracking-widest ${active(item.href) ? "text-[#ff8fa5]" : "text-on-night-muted"}`}>0{index + 1}</span>
+                  </Link>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <div className="mobile-menu-footer mt-auto pt-12">
+            <p className="label mb-3 text-on-night-muted!">Have a project in mind?</p>
+            <a href={`mailto:${CONTACT_INFO.email}`} className="text-lg font-medium break-all">{CONTACT_INFO.email}</a>
+            <Link href="/contact" onClick={close} className="button-light mt-8 w-full">Start a project <ArrowUpRight aria-hidden="true" /></Link>
+          </div>
+        </nav>
+      </div>
+    </header>
+  );
 }

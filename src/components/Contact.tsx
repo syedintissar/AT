@@ -79,7 +79,7 @@ export function Contact({ preselectedService }: { preselectedService?: string })
   }
 
   const inquiryText = [
-    "Hello Alhawaj Tech,",
+    "Hello Alhawaij Tech,",
     "",
     "I'd like to discuss a project with your team.",
     "",
@@ -130,6 +130,20 @@ export function Contact({ preselectedService }: { preselectedService?: string })
           <a className={styles.emailLink} href={`mailto:${CONTACT_INFO.email}`}>
             {CONTACT_INFO.email}<ArrowUpRight size={18} aria-hidden="true" />
           </a>
+          <dl className="mt-10 grid gap-6 border-t border-line pt-8 sm:grid-cols-2">
+            <div>
+              <dt className="label mb-2">Call us</dt>
+              {CONTACT_INFO.phones.map((phone) => (
+                <dd key={phone.href} className="text-[15px] leading-7"><a href={phone.href} className="transition-colors hover:text-brand">{phone.display}</a> <span className="text-sm text-muted">· {phone.label}</span></dd>
+              ))}
+            </div>
+            {CONTACT_INFO.offices.map((office) => (
+              <div key={office.label}>
+                <dt className="label mb-2">{office.label} office</dt>
+                <dd className="text-[15px] leading-7">{office.lines.map((line) => <span key={line} className="block">{line}</span>)}</dd>
+              </div>
+            ))}
+          </dl>
           <div className={styles.nextSteps}>
             <p className="eyebrow">What happens next</p>
             {[

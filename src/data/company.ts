@@ -1,119 +1,26 @@
-import { NavItem, ProcessStep, TechCategory, WhyUsItem } from "@/types";
+import { NavItem, ProcessStep, TechCategory } from "@/types";
+
+export const SITE = {
+  name: "Alhawaij Tech",
+  url: "https://www.alhawaijtech.com",
+  tagline: "Good ideas. Great software.",
+  description:
+    "Alhawaij Tech is a digital product studio for web platforms, mobile apps, UI/UX, cloud, and cybersecurity. We help businesses design, build, and scale software people enjoy using.",
+};
 
 export const NAV_ITEMS: NavItem[] = [
-  { label: "Home", href: "/" },
   { label: "Services", href: "/services" },
-  { label: "Our work", href: "/work" },
-  { label: "About us", href: "/about" },
+  { label: "Work", href: "/work" },
+  { label: "About", href: "/about" },
   { label: "Insights", href: "/insights" },
   { label: "Contact", href: "/contact" },
 ];
 
-export const COMPANY_STATS = [
-  {
-    value: 12,
-    suffix: "+",
-    label: "Digital Services",
-    description: "End-to-end expertise spanning engineering, design & cloud",
-    accent: "red",
-  },
-  {
-    value: 100,
-    suffix: "%",
-    label: "Client Focus",
-    description: "Dedicated agile squads prioritizing your strategic vision",
-    accent: "navy",
-  },
-  {
-    value: 99.9,
-    suffix: "%",
-    label: "Scalable Solutions",
-    description: "Fault-tolerant architecture built for enterprise scale",
-    accent: "red",
-  },
-  {
-    value: 24,
-    suffix: "/7",
-    label: "End-to-End Technology",
-    description: "Continuous innovation, delivery, and round-the-clock support",
-    accent: "navy",
-  },
-];
-
-export const ABOUT_PILLARS = [
-  {
-    title: "Digital Transformation",
-    desc: "Modernizing legacy environments into agile digital operations.",
-    icon: "Cpu",
-    tag: "Core",
-  },
-  {
-    title: "Software Development",
-    desc: "Robust, scalable, enterprise-grade web & mobile applications.",
-    icon: "Code2",
-    tag: "Engineering",
-  },
-  {
-    title: "Cloud Solutions",
-    desc: "Resilient multi-cloud architectures with auto-scaling security.",
-    icon: "Cloud",
-    tag: "Infra",
-  },
-  {
-    title: "Security",
-    desc: "Zero-trust defenses, proactive audits, and continuous compliance.",
-    icon: "Shield",
-    tag: "Protection",
-  },
-  {
-    title: "Design",
-    desc: "Intuitive user experiences and striking, memorable visual identities.",
-    icon: "Palette",
-    tag: "Creative",
-  },
-  {
-    title: "Marketing",
-    desc: "Data-driven acquisition, conversion optimization, and brand growth.",
-    icon: "TrendingUp",
-    tag: "Growth",
-  },
-  {
-    title: "Technical Support",
-    desc: "Proactive 24/7 monitoring, rapid triage, and SLA-backed maintenance.",
-    icon: "Headphones",
-    tag: "Operations",
-  },
-];
-
-export const WHY_US_ITEMS: WhyUsItem[] = [
-  {
-    title: "Innovation First",
-    description: "We anticipate emerging industry paradigms, leveraging modern architectures and AI-ready systems to give your business an unfair advantage.",
-    icon: "Sparkles",
-    stat: "Future-Ready",
-    statLabel: "Frameworks & Standards",
-  },
-  {
-    title: "Scalable Solutions",
-    description: "Our microservices and cloud infrastructures are engineered to gracefully scale from thousand to millions of concurrent users without friction.",
-    icon: "Layers",
-    stat: "10x",
-    statLabel: "Capacity Resilience",
-  },
-  {
-    title: "Security Focused",
-    description: "Security is never an afterthought. We implement multi-layered encryption, zero-trust access, and OWASP compliance from day zero.",
-    icon: "Lock",
-    stat: "Zero-Trust",
-    statLabel: "Continuous Auditing",
-  },
-  {
-    title: "Client-Centric Approach",
-    description: "We operate as an extension of your leadership team. Transparent sprints, real-time Slack/Teams collaboration, and clear measurable ROI.",
-    icon: "Users",
-    stat: "100%",
-    statLabel: "Dedicated Alignment",
-  },
+export const PRINCIPLES = [
+  { icon: "Users", title: "People before pixels.", description: "We start with the people behind the business and the people using the product. Their needs give the work direction." },
+  { icon: "MessagesSquare", title: "Clarity at every step.", description: "Good collaboration needs honest conversations, understandable decisions, and a shared view of what comes next." },
+  { icon: "ScanLine", title: "Care in the details.", description: "From the first interaction to the underlying architecture, we make thoughtful choices that add up to a better experience." },
+  { icon: "Sprout", title: "Build beyond launch.", description: "A launch is a beginning. We consider maintainability, security, and the room your business needs to grow." },
 ];
 
 export const PROCESS_STEPS: ProcessStep[] = [
@@ -253,10 +160,20 @@ export const TECH_CATEGORIES: TechCategory[] = [
   },
 ];
 
+// Contact details as published on www.alhawaijtech.com.
 export const CONTACT_INFO = {
-  email: "contact@alhawajtech.com",
-  phone: "+1 (800) 555-TECH",
-  address: "Tech Boulevard, Silicon Quarter, Suite 400",
-  hours: "Monday – Friday: 9:00 AM – 6:00 PM EST",
-  support: "24/7 Emergency Support Available",
+  email: "alhawaijtech@gmail.com",
+  phones: [
+    { label: "USA", display: "+1 (850) 680-3968", href: "tel:+18506803968" },
+    { label: "Pakistan", display: "+92 312 505 9507", href: "tel:+923125059507" },
+  ],
+  offices: [
+    { label: "United States", lines: ["7901 4th Street North #25245", "St. Petersburg, FL 33702, USA"], street: "7901 4th Street North #25245", locality: "St. Petersburg", region: "FL", postalCode: "33702", country: "US" },
+    { label: "Pakistan", lines: ["F 7/4 Frash Town Phase 2", "Islamabad, Pakistan"], street: "F 7/4 Frash Town Phase 2", locality: "Islamabad", country: "PK" },
+  ],
+  socials: [
+    { label: "LinkedIn", href: "https://www.linkedin.com/company/alhawaijtech" },
+    { label: "Instagram", href: "https://www.instagram.com/alhawaijtech" },
+    { label: "Pinterest", href: "https://www.pinterest.com/alhawaijtech" },
+  ],
 };

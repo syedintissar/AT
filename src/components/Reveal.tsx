@@ -1,8 +1,19 @@
 "use client";
-import { motion, useReducedMotion } from "framer-motion";
-import { useMotionPreference } from "./MotionProvider";
-export function Reveal({ children, className, delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
-  const reduced = useReducedMotion();
-  const { paused } = useMotionPreference();
-  return <motion.div className={className} initial={reduced || paused ? false : { opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "0px 0px -35px 0px" }} transition={{ duration: reduced || paused ? 0 : .65, delay: reduced || paused ? 0 : delay, ease: [.2, .7, .2, 1] }}>{children}</motion.div>;
+import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
+
+export function Reveal({ children, className, delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      element.dataset.revealed = "";
+      observer.disconnect();
+    }, { rootMargin: "0px 0px -40px 0px" });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+  const style = delay ? ({ "--reveal-delay": `${delay}s` } as CSSProperties) : undefined;
+  return <div ref={ref} data-reveal="" className={className} style={style}>{children}</div>;
 }

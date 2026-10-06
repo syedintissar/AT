@@ -4,6 +4,9 @@ import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { MotionProvider } from "@/components/MotionProvider";
+import { JsonLd } from "@/components/JsonLd";
+import { Analytics } from "@/components/Analytics";
+import { CONTACT_INFO, SITE } from "@/data/company";
 
 const geistSans = localFont({
   src: "../../public/fonts/geist-latin.woff2",
@@ -20,105 +23,103 @@ const geistMono = localFont({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#faf9f6",
+  themeColor: "#f7f6f2",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE.url),
   title: {
-    default: "Alhawaj Tech | Good Ideas. Great Software.",
-    template: "%s | Alhawaj Tech",
+    default: `${SITE.name} | ${SITE.tagline}`,
+    template: `%s | ${SITE.name}`,
   },
-  description:
-    "Alhawaj Tech delivers innovative digital solutions that help businesses build, scale, secure, and succeed in a rapidly evolving digital world. Expert DevOps, Cloud, Web & App Development, Cybersecurity, and UI/UX.",
+  description: SITE.description,
   keywords: [
-    "Alhawaj Tech",
-    "Digital Transformation",
-    "DevOps Solutions",
-    "Cloud Computing",
-    "Web Design and Development",
-    "Mobile App Development",
-    "Cybersecurity",
-    "eCommerce Platforms",
-    "UI/UX Design",
-    "Software Engineering Agency",
+    "Alhawaij Tech",
+    "software development company",
+    "web development",
+    "mobile app development",
+    "UI/UX design",
+    "cloud and DevOps",
+    "cybersecurity",
+    "eCommerce development",
+    "digital product studio",
   ],
-  authors: [{ name: "Alhawaj Tech" }],
-  creator: "Alhawaj Tech",
-  publisher: "Alhawaj Tech",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  metadataBase: new URL("https://alhawajtech.com"),
-  alternates: {
-    canonical: "/",
-  },
+  authors: [{ name: SITE.name }],
+  creator: SITE.name,
+  publisher: SITE.name,
+  formatDetection: { email: false, address: false, telephone: false },
   openGraph: {
-    title: "Alhawaj Tech | Transforming Ideas Into Digital Experiences",
-    description:
-      "Alhawaj Tech delivers innovative digital solutions that help businesses build, scale, secure, and succeed in a rapidly evolving digital world.",
-    url: "https://alhawajtech.com",
-    siteName: "Alhawaj Tech",
-    images: [
-      {
-        url: "/logo.png",
-        width: 375,
-        height: 153,
-        alt: "Alhawaj Tech Logo",
-      },
-    ],
+    title: `${SITE.name} | ${SITE.tagline}`,
+    description: SITE.description,
+    url: "/",
+    siteName: SITE.name,
     locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Alhawaj Tech | Transforming Ideas Into Digital Experiences",
-    description:
-      "Innovative digital solutions, DevOps, Cloud, Web & Mobile Development, Cybersecurity, and UI/UX.",
-    images: ["/logo.png"],
+    title: `${SITE.name} | ${SITE.tagline}`,
+    description: SITE.description,
   },
+  ...(process.env.GOOGLE_SITE_VERIFICATION ? { verification: { google: process.env.GOOGLE_SITE_VERIFICATION } } : {}),
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-  icons: {
-    icon: "/icon.png",
-    shortcut: "/icon.png",
-    apple: "/icon.png",
+    googleBot: { index: true, follow: true, "max-video-preview": -1, "max-image-preview": "large", "max-snippet": -1 },
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE.url}/#organization`,
+      name: SITE.name,
+      url: SITE.url,
+      logo: `${SITE.url}/logo.png`,
+      email: CONTACT_INFO.email,
+      telephone: CONTACT_INFO.phones.map((phone) => phone.href.replace("tel:", "")),
+      description: SITE.description,
+      sameAs: CONTACT_INFO.socials.map((social) => social.href),
+      address: CONTACT_INFO.offices.map((office) => ({
+        "@type": "PostalAddress",
+        streetAddress: office.street,
+        addressLocality: office.locality,
+        ...("region" in office ? { addressRegion: office.region } : {}),
+        ...("postalCode" in office ? { postalCode: office.postalCode } : {}),
+        addressCountry: office.country,
+      })),
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE.url}/#website`,
+      name: SITE.name,
+      url: SITE.url,
+      publisher: { "@id": `${SITE.url}/#organization` },
+    },
+  ],
+};
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} scroll-smooth antialiased`}
-    >
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/icon.png" sizes="any" />
+        {/* Hides reveal targets only when JS can reveal them again; no-JS visitors see everything. */}
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
       </head>
       <body className="min-h-screen font-sans">
+        <JsonLd data={organizationJsonLd} />
         <MotionProvider>
           <a href="#main-content" className="skip-link">Skip to content</a>
           <Navbar />
           <main id="main-content" tabIndex={-1}>{children}</main>
           <Footer />
         </MotionProvider>
+        <Analytics />
       </body>
     </html>
   );

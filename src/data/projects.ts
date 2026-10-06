@@ -11,6 +11,9 @@ export type Project = {
   approach: string[];
   features: string[];
   stack: string[];
+  services: string[];
+  seoTitle: string;
+  seoDescription: string;
 };
 
 export const PROJECTS: Project[] = [
@@ -31,6 +34,9 @@ export const PROJECTS: Project[] = [
     ],
     features: ["At-a-glance account overview", "Readable transaction history", "Spending category breakdown", "Responsive dashboard system"],
     stack: ["Next.js", "React", "TypeScript", "Design system"],
+    services: ["ui-ux-design", "web-development"],
+    seoTitle: "Clarity: Finance Dashboard UX Concept",
+    seoDescription: "Clarity is a studio concept for a calmer financial dashboard: clear account overviews, readable transactions, and spending insights for small business teams.",
   },
   {
     slug: "forma-commerce",
@@ -49,6 +55,9 @@ export const PROJECTS: Project[] = [
     ],
     features: ["Editorial collection pages", "Clear product detail structure", "Accessible shopping interactions", "Mobile-first storefront"],
     stack: ["Next.js", "React", "Commerce architecture", "UI/UX design"],
+    services: ["ecommerce", "ui-ux-design", "web-development"],
+    seoTitle: "Forma: eCommerce Storefront Design Concept",
+    seoDescription: "Forma is a studio concept for an editorial eCommerce storefront: collection pages, clear product details, and an accessible, mobile-first path to checkout.",
   },
   {
     slug: "bloom-wellbeing",
@@ -67,5 +76,8 @@ export const PROJECTS: Project[] = [
     ],
     features: ["Simple daily check-ins", "Flexible personal routines", "Guided reflection prompts", "Calm, accessible interaction design"],
     stack: ["Mobile UX", "Interactive prototyping", "Design system", "Product strategy"],
+    services: ["mobile-apps", "ui-ux-design"],
+    seoTitle: "Bloom: Wellbeing Mobile App Design Concept",
+    seoDescription: "Bloom is a studio concept for a wellbeing mobile app: simple daily check-ins, flexible routines, and calm, accessible interaction design for iOS and Android.",
   },
 ];

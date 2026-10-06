@@ -1,32 +1,29 @@
-import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Contact } from "@/components/Contact";
+import { ContactWithQuery } from "@/components/ContactWithQuery";
 import { PageIntro } from "@/components/PageIntro";
+import { JsonLd } from "@/components/JsonLd";
+import { pageMetadata } from "@/lib/metadata";
+import { webPageJsonLd } from "@/lib/structured-data";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description: "Have a product idea or a technology challenge? Tell Alhawaj Tech about your project and start a conversation about design, development, cloud, and more.",
-  alternates: { canonical: "/contact" },
-  openGraph: {
-    title: "Let's build something great | Alhawaj Tech",
-    description: "Start a conversation about your next digital project with Alhawaj Tech.",
-    url: "/contact",
-  },
-};
+const title = "Contact Us: Start Your Software Project";
+const description = "Tell us about your project. Contact Alhawaij Tech by email or phone, or visit our offices in St. Petersburg, Florida and Islamabad, Pakistan.";
 
-export default async function ContactPage({ searchParams }: {
-  searchParams: Promise<{ service?: string | string[] }>;
-}) {
-  const params = await searchParams;
-  const selectedService = Array.isArray(params.service) ? params.service[0] : params.service;
+export const metadata = pageMetadata({ title, description, path: "/contact" });
 
+export default function ContactPage() {
   return (
     <>
+      <JsonLd data={webPageJsonLd({ type: "ContactPage", path: "/contact", name: title, description, breadcrumbs: [{ name: "Contact", path: "/contact" }] })} />
       <PageIntro
         eyebrow="Let's talk"
-        title={<>Your next chapter<br />starts with <span className="text-[#bd0a2f]">a hello.</span></>}
+        title={<>Your next chapter<br />starts with <span className="text-brand">a hello.</span></>}
         description="Tell us where you want to go. We'll help you figure out how to get there."
       />
-      <Contact key={selectedService ?? "general"} preselectedService={selectedService} />
+      {/* Static HTML ships the full form; the ?service= preselection is applied on the client. */}
+      <Suspense fallback={<Contact />}>
+        <ContactWithQuery />
+      </Suspense>
     </>
   );
 }

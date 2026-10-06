@@ -34,11 +34,3 @@ export interface ProcessStep {
   tagline: string;
   icon: string;
 }
-
-export interface WhyUsItem {
-  title: string;
-  description: string;
-  icon: string;
-  stat: string;
-  statLabel: string;
-}
